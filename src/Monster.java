@@ -8,6 +8,10 @@ public class Monster implements Fieldebel{
     private int tochkaX= Main.sizex/2;
     private int tochkaY=Main.sizey/2;
     private boolean isLive=true;
+    public boolean setIsLive(){
+        return isLive=true;
+    }
+
 
     public void setHp(int hp) {
         this.hp = hp;

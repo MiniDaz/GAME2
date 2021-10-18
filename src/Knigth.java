@@ -7,7 +7,16 @@ public class Knigth implements Fieldebel {
     private int tochkaX= 1;
     private int tochkaY=1;
     private boolean isLive=true;
-    private int amountOfPotion=0;
+    private int amountOfPotion=1;
+    public void healsing(){
+        if(amountOfPotion>0){
+            hp+=40;
+            amountOfPotion-=1;
+            if(hp>100){
+                hp=100;
+            }
+        }
+    }
 
     public void setAmountOfPotion(int amountOfPotion) {
         this.amountOfPotion = amountOfPotion;

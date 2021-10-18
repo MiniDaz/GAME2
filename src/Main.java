@@ -5,7 +5,7 @@ public class Main {
     static int sizey;
     static String name;
     public static void main(String[] args) throws InterruptedException {
-        Game game=new Game();
+        Options options=new Options();
 
 
     String str;
@@ -17,7 +17,7 @@ public class Main {
         System.out.println("выберите размер поля по оси Y");
          sizey= scanner.nextInt();
 
-         game.startGame();
+         options.showOptions();
 
 
 
