@@ -10,11 +10,14 @@ public class Game {
         Monster monster=new Monster();
         Goblin goblin=new Goblin();
         Storekeper storekeper=new Storekeper();
+        Boss boss=new Boss();
         Field field=new Field(Main.sizex,Main.sizey);
         field.fieldAdd();
        // field.setFildebel(knigth.getTochkaX(), knigth.getTochkaY(), knigth);
         field.setFildebel(monster.getTochkaX(), monster.getTochkaY(), monster);
+        field.setFildebel(boss.getTochkaX(), boss.getTochkaY(), boss);
         field.setFildebel(2, 5, goblin);
+        ArrayList<Object> bag=new ArrayList<>();
 
 
 
@@ -23,9 +26,65 @@ public class Game {
 
 
         while (gameIsOver!=false){
+            if(knigth.getHp()<100){
+                int hpInMoment= knigth.getHp();
+                hpInMoment+=5;
+                knigth.setHp(hpInMoment);
+            }
 
 
             //BATTLE
+            if(field.getFildebel(knigth.getTochkaX(), knigth.getTochkaY()) instanceof Boss){
+                System.out.println("Ты нашел самое ужасное чудовище этого мира.Что же будешь делать?\n" +
+                        "1.В атаку!\n" +
+                        "2.Отступить");
+                Scanner scanner=new Scanner(System.in);
+                int q= scanner.nextInt();
+
+                switch (q){
+                    case 1:while (knigth.isLive()==true||boss.isLive()==true){
+                        System.out.println(" 1.Удар; 2.Применить зелье здоровья");
+                        switch (q){
+                            case 1:
+                                System.out.println(knigth.getName()+": HP-"+ knigth.getHp()+ "  Damage-"+knigth.getDamage()+
+                                        "  Def-"+ knigth.getDef()+ "  Money-"+knigth.getMoney()+ " Банок здоровья-"+knigth.getAmountOfPotion());
+                                System.out.println(boss.getName()+": HP-"+ boss.getHp()+ "  Damage-"+boss.getDamage()+
+                                        "  Def-"+ boss.getDef()+ "  Money-"+boss.getMoney());
+
+                                int hpKnight= knigth.getHp()-(boss.getDamage()- knigth.getDef());
+                            knigth.setHp(hpKnight);
+                            int crit= random.nextInt(10);
+                            int result;
+                            if(crit>5){
+                                result=2;
+                                System.out.println("Критический удар");
+                            }else {result=1;}
+
+                            int hpBoss= boss.getHp()-(knigth.getDamage()*result - boss.getDef());
+                            boss.setHp(hpBoss);
+                                if (knigth.getHp()<=0||  boss.getHp()<=0){
+                                    if (knigth.getHp()<=0){
+                                        knigth.isDead();
+                                        System.out.println("Вы умерли,попробуйте снова");
+                                        break;
+                                    }if(boss.getHp()<=0){
+                                        boss.isDead();
+                                        int moneyAfterBattle=knigth.getMoney()+goblin.getMoney();
+                                        knigth.setMoney(moneyAfterBattle);
+                                        System.out.println("Поздравляю,вы выиграли!!!");
+                                        gameIsOver=false;
+                                        break;
+
+                                    }
+
+                                }
+
+                        }
+
+                    }
+                    case 2:knigth.setTochkaX(knigth.getTochkaX()+1);
+                }
+            }
             if(field.getFildebel(knigth.getTochkaX(), knigth.getTochkaY()) instanceof Goblin){
                 while (knigth.isLive()==true&& goblin.isLive()==true){
                     Thread.sleep(1000);
@@ -103,13 +162,41 @@ public class Game {
                 int q=storekeper.sell();
 
                 switch (q){
-                    case 1:int w= knigth.getDamage()+storekeper.sword.damagebel();
+                    case 1:if(bag.contains(storekeper.sword)){
+                        System.out.println(knigth.getName()+" , у тебя же есть меч,зачем тебе еще один?");
+
+                    }else{
+                        if(knigth.getMoney()>storekeper.sword.getCoats()){
+                        int w= knigth.getDamage()+storekeper.sword.damagebel();
                         knigth.setDamage(w);
-                        System.out.println("Damage увеличился на :"+storekeper.sword.damagebel()+"!");break;
-                    case 2: int e= knigth.getDef()+ storekeper.guard.defens();
-                                knigth.setDef(e);System.out.println("Def увеличился на :"+storekeper.guard.defens()+"!");break;
-                    case 3: int r= knigth.getAmountOfPotion()+1;
-                        knigth.setAmountOfPotion(r);break;
+                        System.out.println("Damage увеличился на :"+storekeper.sword.damagebel()+"!");
+                        int price= knigth.getMoney()-storekeper.sword.getCoats();
+                        knigth.setMoney(price);
+
+                        bag.add(storekeper.sword);}
+                    else{
+                            System.out.println("Поднакопи еще деньжат!");}
+                    }break;
+                    case 2: if(bag.contains(storekeper.guard)){
+                        System.out.println(knigth.getName()+" , у тебя же есть броня,зачем тебе еще одна?");
+                    }else {
+                        if (knigth.getMoney() > storekeper.guard.getCoats()) {
+
+                            int e = knigth.getDef() + storekeper.guard.defens();
+                            knigth.setDef(e);
+                            System.out.println("Def увеличился на :" + storekeper.guard.defens() + "!");
+                            bag.add(storekeper.guard);
+                            int price= knigth.getMoney()-storekeper.guard.getCoats();
+                            knigth.setMoney(price);
+                        }else {System.out.println("Поднакопи еще деньжат!");}
+                    }break;
+                    case 3: if(knigth.getMoney()>storekeper.potionOfHP.getCoast()){
+                        int r= knigth.getAmountOfPotion()+1;
+
+                        knigth.setAmountOfPotion(r);
+                        int price= knigth.getMoney()-storekeper.potionOfHP.getCoast();
+                        knigth.setMoney(price);
+                    }break;
                     case 4:break;
                 }
                 knigth.setTochkaX(knigth.getTochkaX()-1);

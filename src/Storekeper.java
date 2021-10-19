@@ -17,9 +17,9 @@ public class Storekeper implements Fieldebel {
 
     public int sell(){
         System.out.println("Добро пожаловать в лавку. Что бы вы хотели купить?");
-        System.out.println("1.Меч");
-        System.out.println("2.Доспех");
-        System.out.println("3.Зелье здоровья");
+        System.out.println("1.Меч,его стоимость:"+ sword.getCoats());
+        System.out.println("2.Доспех,его стоимость:"+guard.getCoats());
+        System.out.println("3.Зелье здоровья,его стоимость:"+potionOfHP.getCoast());
         System.out.println("4.ВЫйти из лавки");
         Scanner scanner=new Scanner(System.in);
         int q=scanner.nextInt();
