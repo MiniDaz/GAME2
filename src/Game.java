@@ -16,7 +16,7 @@ public class Game {
        // field.setFildebel(knigth.getTochkaX(), knigth.getTochkaY(), knigth);
         field.setFildebel(monster.getTochkaX(), monster.getTochkaY(), monster);
         field.setFildebel(boss.getTochkaX(), boss.getTochkaY(), boss);
-        field.setFildebel(2, 5, goblin);
+        field.setFildebel(goblin.getTochkaX(), storekeper.getTochkaY(), goblin);
         ArrayList<Object> bag=new ArrayList<>();
 
 
@@ -35,21 +35,28 @@ public class Game {
 
             //BATTLE
             if(field.getFildebel(knigth.getTochkaX(), knigth.getTochkaY()) instanceof Boss){
-                System.out.println("Ты нашел самое ужасное чудовище этого мира.Что же будешь делать?\n" +
-                        "1.В атаку!\n" +
+                System.out.println("Ты нашел самое ужасное чудовище этого мира.Что же будешь делать?\n");
+                System.out.println(knigth.getName()+": HP-"+ knigth.getHp()+ "  Damage-"+knigth.getDamage()+
+                        "  Def-"+ knigth.getDef()+ "  Money-"+knigth.getMoney()+ " Банок здоровья-"+knigth.getAmountOfPotion());
+                System.out.println(boss.getName()+": HP-"+ boss.getHp()+ "  Damage-"+boss.getDamage()+
+                        "  Def-"+ boss.getDef()+ "  Money-"+boss.getMoney());
+                System.out.println("\n 1.В атаку!\n" +
                         "2.Отступить");
+
                 Scanner scanner=new Scanner(System.in);
                 int q= scanner.nextInt();
+                boolean battleOff=true;
 
                 switch (q){
-                    case 1:while (knigth.isLive()==true||boss.isLive()==true){
-                        System.out.println(" 1.Удар; 2.Применить зелье здоровья");
-                        switch (q){
+                    case 1:while (knigth.isLive()==true&&boss.isLive()==true&&battleOff==true){
+
+                        System.out.println(" 1.Удар; 2.Применить зелье здоровья; 3. Отступить;");
+                        int y=scanner.nextInt();
+
+                        switch (y){
+
                             case 1:
-                                System.out.println(knigth.getName()+": HP-"+ knigth.getHp()+ "  Damage-"+knigth.getDamage()+
-                                        "  Def-"+ knigth.getDef()+ "  Money-"+knigth.getMoney()+ " Банок здоровья-"+knigth.getAmountOfPotion());
-                                System.out.println(boss.getName()+": HP-"+ boss.getHp()+ "  Damage-"+boss.getDamage()+
-                                        "  Def-"+ boss.getDef()+ "  Money-"+boss.getMoney());
+
 
                                 int hpKnight= knigth.getHp()-(boss.getDamage()- knigth.getDef());
                             knigth.setHp(hpKnight);
@@ -57,11 +64,15 @@ public class Game {
                             int result;
                             if(crit>5){
                                 result=2;
-                                System.out.println("Критический удар");
+                                System.out.println("Ты нашел слабое место,следующий удар будет критичеким!");
                             }else {result=1;}
 
                             int hpBoss= boss.getHp()-(knigth.getDamage()*result - boss.getDef());
                             boss.setHp(hpBoss);
+                                System.out.println(knigth.getName()+": HP-"+ knigth.getHp()+ "  Damage-"+knigth.getDamage()+
+                                        "  Def-"+ knigth.getDef()+ "  Money-"+knigth.getMoney()+ " Банок здоровья-"+knigth.getAmountOfPotion());
+                                System.out.println(boss.getName()+": HP-"+ boss.getHp()+ "  Damage-"+boss.getDamage()+
+                                        "  Def-"+ boss.getDef()+ "  Money-"+boss.getMoney());
                                 if (knigth.getHp()<=0||  boss.getHp()<=0){
                                     if (knigth.getHp()<=0){
                                         knigth.isDead();
@@ -69,7 +80,7 @@ public class Game {
                                         break;
                                     }if(boss.getHp()<=0){
                                         boss.isDead();
-                                        int moneyAfterBattle=knigth.getMoney()+goblin.getMoney();
+                                        int moneyAfterBattle=knigth.getMoney()+boss.getMoney();
                                         knigth.setMoney(moneyAfterBattle);
                                         System.out.println("Поздравляю,вы выиграли!!!");
                                         gameIsOver=false;
@@ -77,9 +88,15 @@ public class Game {
 
                                     }
 
-                                }
+                                } break;
+                            case 2: knigth.healsing();
+                                System.out.println("HP увеличено на 40");break;
+
+                            case 3:knigth.setTochkaX(knigth.getTochkaX());
+                            battleOff=false; break;
 
                         }
+
 
                     }
                     case 2:knigth.setTochkaX(knigth.getTochkaX()+1);
@@ -112,8 +129,9 @@ public class Game {
                     }
 
                 }
-                int x= random.nextInt(1,Main.sizex)-1;
-                int y= random.nextInt(Main.sizey);
+                int x= random.nextInt(2,Main.sizex)-1;
+                int y= random.nextInt(1,Main.sizey);
+
                 field.setFildebel(x, y,goblin );
                 goblin.setIsLive();
                 goblin.setHp(100);
@@ -147,8 +165,9 @@ public class Game {
                 }
 
                 }
-                int x= random.nextInt(1,Main.sizex)-1;
-                int y= random.nextInt(Main.sizey);
+                int x= random.nextInt(2,Main.sizex)-1;
+                int y= random.nextInt(1,Main.sizey);
+
                 field.setFildebel(x, y,monster );
                 monster.setIsLive();
                 monster.setHp(40);

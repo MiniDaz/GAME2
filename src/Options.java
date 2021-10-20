@@ -22,10 +22,10 @@ public class Options {
                         "в игре используются следующие обозначения:\n" +
                         "&-игрок\n" +
                         "$-торговец\n" +
-                        "?- монстры\n" +
+                        "? *- монстры\n" +
                         "#-бос,которого нужно победить\n");showOptions();break;
             case 3:
-                System.out.println("\n\nПривет это моя вторая игра,первую можно посмотреть по ссылке:\n");showOptions();break;
+                System.out.println("\n\nПривет это моя вторая игра,первую можно посмотреть по ссылке:https://github.com/MiniDaz/11\n");showOptions();break;
 
         }
     }

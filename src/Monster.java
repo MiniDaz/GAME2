@@ -2,7 +2,7 @@ public class Monster implements Fieldebel{
 
     private int hp=40;
     private final int damage=5;
-    private final int money=10;
+    private final int money=15;
     private final String name= "Монстр 1";
     private final int def=0;
     private int tochkaX= Main.sizex/2;

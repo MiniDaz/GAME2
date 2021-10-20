@@ -11,7 +11,8 @@ public class Goblin  implements Fieldebel{
         isLive=false;
     }
     public boolean setIsLive(){
-        return isLive=true;
+       isLive=true;
+       return isLive;
     }
 
     public int getHp() {

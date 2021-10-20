@@ -4,8 +4,8 @@ public class Boss implements Fieldebel{
     public char Simbol() {
         return '#';
     }
-    private int hp=100;
-    private final int damage=5;
+    private int hp=300;
+    private final int damage=30;
     private final int money=999999999;
     private final String name= "BOSS";
     private final int def=5;
